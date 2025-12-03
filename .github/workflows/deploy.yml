@@ -23,6 +23,7 @@ jobs:
       run: docker build -t bot-leurre:latest .
 
     - name: Run bot container
-      run: timeout 14520s docker run --rm \
-        -e NODE_ENV=production \
-        bot-leurre:latest
+      run: |
+        timeout 14520s docker run --rm \
+          -e NODE_ENV=production \
+          bot-leurre:latest
