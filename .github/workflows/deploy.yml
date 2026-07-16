@@ -32,4 +32,8 @@ jobs:
       run: |
         timeout 14520s docker run --rm \
           -e NODE_ENV=production \
+          -e GH_RESTART_TOKEN=${{ secrets.GH_TOKEN }} \
+          -e GITHUB_REPOSITORY=${{ github.repository }} \
+          -e GH_WORKFLOW_FILE=deploy.yml \
+          -e GH_WORKFLOW_REF=main \
           bot-leurre:latest
