@@ -1,4 +1,4 @@
-name: Docker CI - Leurre
+name: SUPREMUS CI - IA
 
 on:
   push:
