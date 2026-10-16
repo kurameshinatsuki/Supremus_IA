@@ -28,9 +28,30 @@ jobs:
           --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }} \
           -t bot-leurre:latest .
 
+    - name: Build sandbox image (outil executer_code)
+      run: |
+        mkdir -p /tmp/makima-sbx && chmod 777 /tmp/makima-sbx
+        docker build -t makima-sandbox - <<'DOCKERFILE'
+        FROM node:20-slim
+        RUN apt-get update && apt-get install -y --no-install-recommends \
+              python3 python3-pip fonts-dejavu-core \
+            && rm -rf /var/lib/apt/lists/*
+        RUN pip3 install --no-cache-dir --break-system-packages \
+              pandas numpy matplotlib pillow openpyxl reportlab requests beautifulsoup4
+        RUN npm install -g docx pdfkit undici
+        ENV NODE_PATH=/usr/local/lib/node_modules
+        USER 65534:65534
+        WORKDIR /out
+        DOCKERFILE
+
     - name: Run bot container
       run: |
         timeout 14520s docker run --rm \
+          -v /var/run/docker.sock:/var/run/docker.sock \
+          -v /tmp/makima-sbx:/tmp/makima-sbx \
+          -e SANDBOX_WORKDIR=/tmp/makima-sbx \
+          -e GH_PR_TOKEN=${{ secrets.GH_PR_TOKEN }} \
+          -e GH_PR_REPO=kurameshinatsuki/Supremus-IA \
           -e NODE_ENV=production \
           -e GH_RESTART_TOKEN=${{ secrets.GH_TOKEN }} \
           -e GITHUB_REPOSITORY=${{ github.repository }} \
