@@ -8,6 +8,9 @@ RUN apt-get update && apt-get install -y \
   && apt-get upgrade -y \
   && rm -rf /var/lib/apt/lists/*
 
+# Client Docker : l'outil executer_code lance son bac à sable via le socket Docker du runner
+COPY --from=docker:cli /usr/local/bin/docker /usr/local/bin/docker
+
 WORKDIR /root
 
 ARG GITHUB_TOKEN
