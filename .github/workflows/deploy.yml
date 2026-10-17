@@ -28,7 +28,7 @@ jobs:
           --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }} \
           -t bot-leurre:latest .
 
-    - name: Build sandbox image (outil executer_code)
+    - name: Build sandbox image
       run: |
         mkdir -p /tmp/makima-sbx && chmod 777 /tmp/makima-sbx
         docker build -t makima-sandbox - <<'DOCKERFILE'
