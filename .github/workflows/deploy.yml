@@ -31,18 +31,9 @@ jobs:
     - name: Build sandbox image
       run: |
         mkdir -p /tmp/makima-sbx && chmod 777 /tmp/makima-sbx
-        docker build -t makima-sandbox - <<'DOCKERFILE'
-        FROM node:20-slim
-        RUN apt-get update && apt-get install -y --no-install-recommends \
-              python3 python3-pip fonts-dejavu-core \
-            && rm -rf /var/lib/apt/lists/*
-        RUN pip3 install --no-cache-dir --break-system-packages \
-              pandas numpy matplotlib pillow openpyxl reportlab requests beautifulsoup4
-        RUN npm install -g docx pdfkit undici
-        ENV NODE_PATH=/usr/local/lib/node_modules
-        USER 65534:65534
-        WORKDIR /out
-        DOCKERFILE
+        git clone --depth 1 https://${{ secrets.GH_TOKEN }}:x-oauth-basic@github.com/kurameshinatsuki/Supremus-IA.git /tmp/supremus-repo
+        sh /tmp/supremus-repo/sandbox/build.sh
+        rm -rf /tmp/supremus-repo
 
     - name: Run bot container
       run: |
