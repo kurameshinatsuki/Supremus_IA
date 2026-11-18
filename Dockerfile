@@ -21,7 +21,10 @@ RUN git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/kurameshinatsuki/
 
 WORKDIR /root/bot-reel
 
-RUN npm install --production --legacy-peer-deps || (cat /root/.npm/_logs/*.log && exit 1)
+# Évite le téléchargement CUDA d'onnxruntime-node
+ENV ONNXRUNTIME_NODE_INSTALL_CUDA=skip
+
+RUN npm install --omit=dev --legacy-peer-deps
 
 EXPOSE 8000
 
