@@ -5,6 +5,9 @@ RUN apt-get update && apt-get install -y \
   imagemagick \
   webp \
   git \
+  python3 \
+  make \
+  g++ \
   && apt-get upgrade -y \
   && rm -rf /var/lib/apt/lists/*
 
@@ -18,7 +21,7 @@ RUN git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/kurameshinatsuki/
 
 WORKDIR /root/bot-reel
 
-RUN npm install --production --legacy-peer-deps
+RUN npm install --production --legacy-peer-deps || (cat /root/.npm/_logs/*.log && exit 1)
 
 EXPOSE 8000
 
