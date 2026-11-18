@@ -22,6 +22,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Diagnostic
+      run: |
+        git log -1 --oneline
+        ls -la
+        git ls-files | grep -i bacasable || echo "AUCUN fichier bacasable dans le commit"
+
     - name: Build Docker image with token
       run: |
         docker build \
