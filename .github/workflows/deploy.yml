@@ -31,9 +31,8 @@ jobs:
     - name: Build sandbox image
       run: |
         mkdir -p /tmp/makima-sbx && chmod 777 /tmp/makima-sbx
-        git clone --depth 1 https://${{ secrets.GH_TOKEN }}:x-oauth-basic@github.com/kurameshinatsuki/Supremus-IA.git /tmp/supremus-repo
-        sh /tmp/supremus-repo/sandbox/build.sh
-        rm -rf /tmp/supremus-repo
+        cd bacasable/image
+        sh build.sh
 
     - name: Run bot container
       run: |
